@@ -14,36 +14,67 @@ import { map } from 'rxjs/operators';
  */
 
 export class ProductService{ 
+
+      /**
+     * Servicio para la gestión de productos.
+     * Proporciona métodos para agregar, actualizar, y eliminar productos en Firestore.
+     */
     
     private productsCollection = collection(this.firestore, 'products');
     constructor(private firestore: Firestore) {}
 
+    /**
+     * BehaviorSubject que contiene el carrito de compras.
+     * Emite un arreglo de objetos que contienen productos y cantidades.
+     */
+
     private cart = new BehaviorSubject<{ product: Product, quantity: number }[]>(this.getCart());
     cart$ = this.cart.asObservable();
-
+    
+    /**
+     * Añade un nuevo producto a la colección de productos en Firestore.
+     * @param product El producto que se añadirá a Firestore.
+     * @returns Una promesa que se resuelve cuando se completa la operación de añadir el producto.
+     */
 
     addProduct(product: Product): Promise<void> {
       const productDoc = doc(this.firestore, `products/${product.id}`);
       return setDoc(productDoc, product);
     }
+
+    /**
+     * Actualiza un producto existente en Firestore.
+     * @param id El ID del producto que se actualizará.
+     * @param product Objeto parcial que contiene los campos actualizados del producto.
+     * @returns Una promesa que se resuelve cuando se completa la operación de actualizar el producto.
+     */
   
-    updateProduct(id: string, product: Partial<Product>): Promise<void> {
+    updateProduct(id: string | number, product: Partial<Product>): Promise<void> {
       const productDoc = doc(this.firestore, `products/${id}`);
       return updateDoc(productDoc, product);
     }
+
+    /**
+     * Elimina un producto de la colección en Firestore.
+     * @param id El ID del producto que se eliminará.
+     * @returns Una promesa que se resuelve cuando se completa la operación de eliminar el producto.
+     */
   
     deleteProduct(id: string): Promise<void> {
       const productDoc = doc(this.firestore, `products/${id}`);
       return deleteDoc(productDoc);
     }
 
-     // Método para verificar si un producto con un ID específico ya existe
+    /**
+     * Verifica si existe un producto con el ID especificado en Firestore.
+     * @param id El ID del producto que se verificará.
+     * @returns Una promesa que se resuelve con true si el documento existe, o false si no existe.
+     */
+
     checkProductIdExists(id: string): Promise<boolean> {
       const productDoc = doc(this.firestore, `products/${id}`);
       return getDoc(productDoc).then(docSnapshot => docSnapshot.exists());
     }
-
-
 
     /**
    * Obtiene todos los productos disponibles.

@@ -28,7 +28,19 @@ export class HomeComponent implements OnInit, OnDestroy {
    * @type {Product[]} Arreglo de objetos de tipo Product.
    */
   products: Product[] = [];
+
+  /**
+ * FormGroup para el formulario de agregar producto.
+ * Se utiliza para gestionar y validar los campos del formulario de nuevo producto.
+ */
+
   productForm: FormGroup;
+
+  /**
+ * Objeto que representa un nuevo producto.
+ * Contiene los campos necesarios para crear un nuevo producto.
+ */
+
   newProduct: Product = {
     id: 0,
     categoria: '',
@@ -38,7 +50,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     thumbnailUrl: '',
     title: '',
   };
+
+  /**
+ * Producto seleccionado para operaciones de edición o eliminación.
+ * Puede ser undefined si ningún producto está seleccionado.
+ */
+
   selectedProduct: Product | undefined;
+ 
+  /**
+ * FormGroup para el formulario de edición de producto.
+ * Se utiliza para gestionar y validar los campos del formulario de edición de producto.
+ */
+
   editProductForm: FormGroup | undefined;
 
   /**
@@ -70,6 +94,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService, private router: Router,private formBuilder: FormBuilder) {
     this.productForm = this.formBuilder.group({
       id: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_-]+$')]],
+      categoria: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      marca: ['', Validators.required],
+      precio: [0, [Validators.required, Validators.min(0)]],
+      thumbnailUrl: ['', [Validators.required]],
+      title: ['', Validators.required]
+    });
+
+    this.editProductForm = this.formBuilder.group({
       categoria: ['', Validators.required],
       descripcion: ['', Validators.required],
       marca: ['', Validators.required],
@@ -222,6 +255,81 @@ export class HomeComponent implements OnInit, OnDestroy {
         .catch(error => {
           console.error('Error al eliminar el producto:', error);
         });
+    }
+  }
+
+  /**
+ * Método que abre el modal de edición de productos y carga los datos del producto seleccionado en el formulario.
+ * Utiliza el formulario editProductForm para cargar los datos del producto seleccionado.
+ * Abre el modal utilizando Bootstrap Modal y muestra los datos del producto para su edición.
+ * @param {Product} product - El producto seleccionado para editar.
+ * @returns {void}
+ */
+
+  openEditProductModal(product: Product): void {
+    // Cargar los datos del producto seleccionado en el formulario de edición
+    this.selectedProduct = product;
+    this.editProductForm?.patchValue({
+      categoria: product.categoria,
+      descripcion: product.descripcion,
+      marca: product.marca,
+      precio: product.precio,
+      thumbnailUrl: product.thumbnailUrl,
+      title: product.title
+    });
+    
+    // Abrir el modal de edición de productos
+    const editProductModal = document.getElementById('editProductModal');
+    if (editProductModal) {
+      const modal = new bootstrap.Modal(editProductModal);
+      modal.show();
+    }
+  }
+
+  /**
+ * Método que actualiza los datos de un producto seleccionado en Firestore.
+ * Utiliza el formulario editProductForm para obtener los datos actualizados del producto.
+ * Llama al servicio ProductService para actualizar el producto en la base de datos.
+ * Cierra el modal después de la actualización y muestra un mensaje de confirmación.
+ * Maneja errores en caso de fallo en la actualización.
+ * @returns {void}
+ */
+
+  updateProduct(): void {
+    // Verificar si el formulario de edición es válido
+    if (this.editProductForm?.invalid) {
+      return;
+    }
+    
+     // Obtener los datos actualizados del formulario de edición
+    const updatedProduct: Partial<Product> = {
+      categoria: this.editProductForm?.value.categoria,
+      descripcion: this.editProductForm?.value.descripcion,
+      marca: this.editProductForm?.value.marca,
+      precio: this.editProductForm?.value.precio,
+      thumbnailUrl: this.editProductForm?.value.thumbnailUrl,
+      title: this.editProductForm?.value.title
+    };
+    
+    // Verificar si el producto seleccionado tiene un ID válido
+    if (this.selectedProduct?.id) {
+      // Llamar al servicio para actualizar el producto en Firestore
+      this.productService.updateProduct(this.selectedProduct.id.toString(), updatedProduct)
+        .then(() => {
+            // Cerrar el modal
+            const modalElement = document.getElementById('editProductModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+
+            // Mostrar mensaje de confirmación de la actualización
+            this.showToast(`${this.selectedProduct?.title} Modificado con existo.`);
+        })
+        .catch(error => {
+           // Manejo del error en caso de fallo en la actualización
+          console.error('Error al actualizar el producto:', error);
+        });
+    } else {
+      console.error('Producto seleccionado no tiene un ID válido');
     }
   }
 }
