@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Product} from "../models/product.model";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Firestore,collectionData, collection,doc,docData,addDoc,updateDoc,deleteDoc } from "@angular/fire/firestore";
+import { Firestore,collectionData, collection,doc,docData,getDoc,setDoc,updateDoc,deleteDoc } from "@angular/fire/firestore";
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -23,7 +23,8 @@ export class ProductService{
 
 
     addProduct(product: Product): Promise<void> {
-      return addDoc(this.productsCollection, product).then(() => {});
+      const productDoc = doc(this.firestore, `products/${product.id}`);
+      return setDoc(productDoc, product);
     }
   
     updateProduct(id: string, product: Partial<Product>): Promise<void> {
@@ -35,6 +36,13 @@ export class ProductService{
       const productDoc = doc(this.firestore, `products/${id}`);
       return deleteDoc(productDoc);
     }
+
+     // Método para verificar si un producto con un ID específico ya existe
+    checkProductIdExists(id: string): Promise<boolean> {
+      const productDoc = doc(this.firestore, `products/${id}`);
+      return getDoc(productDoc).then(docSnapshot => docSnapshot.exists());
+    }
+
 
 
     /**

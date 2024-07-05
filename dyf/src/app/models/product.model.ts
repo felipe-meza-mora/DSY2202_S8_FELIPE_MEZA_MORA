@@ -12,7 +12,6 @@ export interface Product{
     categoria: string;
      /** Marca del producto */
     marca: string;
-    estado: number;
     /** Título o nombre del producto */
     title: string;
     /** Descripción detallada del producto */

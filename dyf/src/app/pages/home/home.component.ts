@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { ProductService } from '../../service/product.service';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from '../../models/product.model';
 
 declare var bootstrap: any; 
@@ -10,7 +11,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -27,6 +28,16 @@ export class HomeComponent implements OnInit, OnDestroy {
    * @type {Product[]} Arreglo de objetos de tipo Product.
    */
   products: Product[] = [];
+  productForm: FormGroup;
+  newProduct: Product = {
+    id: 0,
+    categoria: '',
+    descripcion: '',
+    marca: '',
+    precio: 0,
+    thumbnailUrl: '',
+    title: '',
+  };
   
 
   /**
@@ -53,12 +64,18 @@ export class HomeComponent implements OnInit, OnDestroy {
    * @type {number} Valor total de los productos en el carrito.
    */
   total: number = 0;
+  errorMessage: string | undefined;
 
-  constructor(private productService: ProductService, private router: Router) {
-   
-
-
-
+  constructor(private productService: ProductService, private router: Router,private formBuilder: FormBuilder) {
+    this.productForm = this.formBuilder.group({
+      id: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_-]+$')]],
+      categoria: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      marca: ['', Validators.required],
+      precio: [0, [Validators.required, Validators.min(0)]],
+      thumbnailUrl: ['', [Validators.required]],
+      title: ['', Validators.required]
+    });
   }
 
   /**
@@ -144,6 +161,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (toastElement) {
       const toast = new bootstrap.Toast(toastElement);
       toast.show();
+    }
+  }
+
+  
+
+
+  /**
+   * Método que añade un nuevo producto a la colección de productos en Firestore.
+   * Utiliza el servicio ProductService para realizar la inserción del nuevo producto.
+   * @returns {void}
+   */
+  addProduct(): void {
+    if (this.productForm.valid) {
+      const newProduct: Product = this.productForm.value;
+
+      this.productService.checkProductIdExists(newProduct.id.toString())
+        .then(exists => {
+          if (exists) {
+            this.errorMessage = 'El ID del producto ya existe. Por favor, elija otro ID.';
+          } else {
+            this.productService.addProduct(newProduct)
+              .then(() => {
+                console.log('Producto agregado con éxito');
+                this.productForm.reset();
+                this.errorMessage = ''; // Limpiar el mensaje de error en caso de éxito
+              })
+              .catch(error => {
+                console.error('Error al agregar producto: ', error);
+              });
+          }
+        })
+        .catch(error => {
+          console.error('Error al verificar ID del producto: ', error);
+        });
     }
   }
 }
