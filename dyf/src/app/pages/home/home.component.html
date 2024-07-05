@@ -124,7 +124,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="thumbnailUrl" class="form-label">Imagen</label>
-                  <input type="file" class="form-control" id="thumbnailUrl" formControlName="thumbnailUrl">
+                  <input type="text" class="form-control" id="thumbnailUrl" formControlName="thumbnailUrl">
                   <div *ngIf="productForm.get('thumbnailUrl')?.invalid && (productForm.get('thumbnailUrl')?.dirty || productForm.get('thumbnailUrl')?.touched)" class="text-danger">
                     <div *ngIf="productForm.get('thumbnailUrl')?.errors?.['required']">Imagen URL es requerido.</div>
                     <div *ngIf="productForm.get('thumbnailUrl')?.errors?.['pattern']">URL no válida.</div>
@@ -142,6 +142,17 @@
               </form>
             </div>
           </div>
+        </div>
+      </div>
+
+
+      <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Confirmación</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div id="toast-body" class="toast-body"></div>
         </div>
       </div>
 

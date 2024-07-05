@@ -164,18 +164,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  
-
-
   /**
-   * Método que añade un nuevo producto a la colección de productos en Firestore.
-   * Utiliza el servicio ProductService para realizar la inserción del nuevo producto.
-   * @returns {void}
-   */
+ * Método que añade un nuevo producto a la colección de productos en Firestore.
+ * Utiliza el servicio ProductService para realizar la inserción del nuevo producto.
+ * Cierra el modal después de agregar el producto y muestra un mensaje de confirmación.
+ * @returns {void}
+ */
   addProduct(): void {
     if (this.productForm.valid) {
       const newProduct: Product = this.productForm.value;
-
       this.productService.checkProductIdExists(newProduct.id.toString())
         .then(exists => {
           if (exists) {
@@ -186,6 +183,14 @@ export class HomeComponent implements OnInit, OnDestroy {
                 console.log('Producto agregado con éxito');
                 this.productForm.reset();
                 this.errorMessage = ''; // Limpiar el mensaje de error en caso de éxito
+                
+                // Cerrar el modal
+                const modalElement = document.getElementById('productModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                modalInstance.hide();
+
+                // Mostrar mensaje de confirmación
+                this.showToast('Producto agregado con éxito');
               })
               .catch(error => {
                 console.error('Error al agregar producto: ', error);
