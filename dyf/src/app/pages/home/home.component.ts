@@ -38,7 +38,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     thumbnailUrl: '',
     title: '',
   };
-  
+  selectedProduct: Product | undefined;
+  editProductForm: FormGroup | undefined;
 
   /**
    * Suscripción al evento de navegación del Router para recargar la lista de productos al cambiar de ruta.
@@ -199,6 +200,27 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
         .catch(error => {
           console.error('Error al verificar ID del producto: ', error);
+        });
+    }
+  }
+
+  openDeleteModal(product: Product): void {
+    this.selectedProduct = product;
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+    deleteModal.show();
+  }
+
+  deleteProduct(): void {
+    if (this.selectedProduct) {
+      this.productService.deleteProduct(this.selectedProduct.id.toString())
+        .then(() => {
+          console.log('Producto eliminado con éxito');
+          this.showToast(`${this.selectedProduct?.title} ha sido eliminado.`);
+          this.loadProducts();
+          bootstrap.Modal.getInstance(document.getElementById('deleteProductModal')).hide();
+        })
+        .catch(error => {
+          console.error('Error al eliminar el producto:', error);
         });
     }
   }
