@@ -13,14 +13,14 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+        <label for="nombre" class="form-label">Nombre Completo</label>
         <input type="text" class="form-control" id="nombre" formControlName="nombre">
         <div *ngIf="formRegistro.get('nombre')?.hasError('required')" class="text-danger">
           El nombre completo es requerido
         </div>
       </div>
       <div class="mb-3">
-        <label for="correo" class="form-label">Correo Electrónico</label>
+        <label for="email" class="form-label">Correo Electrónico</label>
         <input type="email" class="form-control" id="email" formControlName="email">
         <div *ngIf="formRegistro.get('email')?.hasError('required')" class="text-danger">
           El correo electrónico es requerido
@@ -90,6 +90,11 @@
     <!-- Mostrar mensaje de éxito -->
     <div *ngIf="mensajeExito" class="alert alert-success mt-3">
       {{ mensajeExito }}
+    </div>
+
+     <!-- Mostrar mensaje de error -->
+     <div *ngIf="mensajeError" class="alert alert-danger mt-3">
+      {{ mensajeError }}
     </div>
   </div>
 </div>

@@ -66,7 +66,7 @@ export class PerfilComponent implements OnInit {
       this.formRegistro.patchValue({
         rut: userData.rut,
         nombre: userData.nombre,
-        email: userData.email,
+        email: userData.correo,
         telefono: userData.telefono,
         permisos: userData.permisos,
         direccionEnvio: userData.direccionEnvio

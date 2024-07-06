@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UsersService } from '../../service/users.service';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
   correoNoRegistrado = false;
 
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private usersService: UsersService) {}
 
 
   /**
@@ -60,26 +61,20 @@ export class LoginComponent implements OnInit {
    * Muestra mensajes de error si las credenciales no son válidas.
    */
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     const email = this.formLogin.get('email')?.value;
     const password = this.formLogin.get('password')?.value;
 
-    // Obtener usuarios del localStorage
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-    // Verificar si el correo electrónico está registrado
-    const usuarioRegistrado = usuarios.find((usuario: any) => usuario.email === email);
-
-    if (usuarioRegistrado) {
-      if (usuarioRegistrado.password === password) {
+    try {
+      const usuario = await this.usersService.validateUser(email, password);
+      if (usuario) {
         // Guardar la sesión del usuario en localStorage
-        localStorage.setItem('sesionUsuario', JSON.stringify(usuarioRegistrado));
+        localStorage.setItem('sesionUsuario', JSON.stringify(usuario));
 
         // Navegar a la página principal
-        
-        //this.router.navigate(['/']); 
-        window.location.reload();
-        window.location.href = '/';
+        this.router.navigate(['/']); 
+        //window.location.reload();
+        //window.location.href = '/';
 
         // Limpiar mensaje de error si hubiera alguno previo
         this.mensajeError = null; 
@@ -87,9 +82,11 @@ export class LoginComponent implements OnInit {
         this.correoNoRegistrado = false; 
       } else {
         this.mensajeError = 'La contraseña ingresada es incorrecta';
+        this.correoNoRegistrado = true; // Establecer el estado de correo no registrado
       }
-    } else {
-      this.correoNoRegistrado = true; // Establecer el estado de correo no registrado
+    } catch (error) {
+      console.error("Error al iniciar sesión: ", error);
+      this.mensajeError = 'Hubo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.';
     }
   }
 }

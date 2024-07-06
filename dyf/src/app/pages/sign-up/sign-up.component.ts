@@ -1,6 +1,8 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UsersService } from '../../service/users.service';
+import { User } from '../../models/users.model';
 import { validarRut } from '../../validators/rut.validator';
 
 /**
@@ -30,8 +32,9 @@ export class SignUpComponent {
 
   formRegistro!: FormGroup;
   mensajeExito: string | null = null;
+  mensajeError: string | null = null;
 
-  constructor(private f : FormBuilder) {}
+  constructor(private f : FormBuilder, private usersService: UsersService) {}
 
   /**
    * @description Inicializa el formulario de registro con validadores personalizados.
@@ -113,56 +116,49 @@ export class SignUpComponent {
    * Muestra un mensaje de éxito y limpia el formulario después de 3 segundos.
    * @usageNotes Llama este método al hacer clic en el botón de enviar formulario en el template.
    */
-
-  submitForm(): void {
+   async submitForm():  Promise<void> {
     if (this.formRegistro.valid) {
-      // Obtener usuarios existentes del localStorage o inicializar un arreglo vacío si no hay ninguno
-      let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-  
-      // Nuevo usuario a registrar
-      const nuevoUsuario = {
-        rut: this.formRegistro.get('rut')?.value,
-        nombre: this.formRegistro.get('nombre')?.value,
-        email: this.formRegistro.get('email')?.value,
-        password: this.formRegistro.get('password')?.value,
-        telefono: this.formRegistro.get('telefono')?.value,
-        direccionEnvio: this.formRegistro.get('direccionEnvio')?.value,
-        permisos: 'cliente' // Asignar permisos de cliente por defecto
-      };
-  
-      // Agregar el nuevo usuario al arreglo de usuarios
-      usuarios.push(nuevoUsuario);
-  
-      // Guardar usuarios en localStorage
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-  
-      // Guardar usuario administrador predeterminado si aún no existe
-      if (!usuarios.some((u: any) => u.email === 'admin@dyf.cl')) {
-        const adminUsuario = {
-          rut: '11111111-1',
-          nombre: 'Admin',
-          email: 'admin@dyf.cl',
-          password: 'Qwerty123$',
-          telefono: '123456789',
-          direccionEnvio: 'Dirección de administrador',
-          permisos: 'admin'
+      const rut = this.formRegistro.get('rut')?.value;
+
+      try {
+        const rutRegistered = await this.usersService.isRutRegistered(rut);
+
+        if (rutRegistered) {
+          this.mensajeError = 'El RUT ingresado ya está registrado.';
+          setTimeout(() => {
+            this.formRegistro.reset();
+            this.mensajeError = null;
+          }, 3000);
+          return;
+        }
+
+        const nuevoUsuario: User = {
+          rut: this.formRegistro.get('rut')?.value,
+          nombre: this.formRegistro.get('nombre')?.value,
+          correo: this.formRegistro.get('email')?.value,
+          password: this.formRegistro.get('password')?.value,
+          telefono: this.formRegistro.get('telefono')?.value,
+          direccionEnvio: this.formRegistro.get('direccionEnvio')?.value,
+          permisos: 'cliente'
         };
-  
-        usuarios.push(adminUsuario);
-        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+        await this.usersService.addUser(nuevoUsuario);
+
+        const nombreUsuario = this.formRegistro.get('nombre')?.value;
+        this.mensajeExito = `¡${nombreUsuario}, tu información ha sido guardada exitosamente!`;
+
+        setTimeout(() => {
+          this.formRegistro.reset();
+          this.mensajeExito = null;
+        }, 3000);
+
+      } catch (error) {
+        console.error("Error al registrar el usuario: ", error);
       }
-  
-      // Mostrar mensaje de éxito
-      const nombreUsuario = this.formRegistro.get('nombre')?.value;
-      this.mensajeExito = `¡${nombreUsuario}, tu información ha sido guardada exitosamente!`;
-  
-      // Limpiar formulario después de 3 segundos
-      setTimeout(() => {
-        this.formRegistro.reset();
-        this.mensajeExito = null;
-      }, 3000);
     }
   }
+
+
 
    /**
    * @description Limpia el formulario de registro.
