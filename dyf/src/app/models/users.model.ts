@@ -3,7 +3,6 @@
  * @description Define la estructura de datos para un usuario con sus propiedades principales.
  */
 export interface User {
-
     /**
      * ID único del usuario.
      */
@@ -32,12 +31,12 @@ export interface User {
     /**
      * Permisos o roles asignados al usuario.
      */
-    permisos: string;
+    permisos?: string;
   
     /**
      * Número de teléfono del usuario.
      */
-    telefono: string;
+    telefono?: string;
 
     /**
      * Dirección del usuario.

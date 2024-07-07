@@ -20,12 +20,12 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="email" class="form-label">Correo Electrónico</label>
-        <input type="email" class="form-control" id="email" formControlName="email">
-        <div *ngIf="formRegistro.get('email')?.hasError('required')" class="text-danger">
+        <label for="correo" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="correo" formControlName="correo">
+        <div *ngIf="formRegistro.get('correo')?.hasError('required')" class="text-danger">
           El correo electrónico es requerido
         </div>
-        <div *ngIf="formRegistro.get('email')?.hasError('email') && !formRegistro.get('email')?.hasError('required')" class="text-danger">
+        <div *ngIf="formRegistro.get('correo')?.hasError('email') && !formRegistro.get('correo')?.hasError('required')" class="text-danger">
           Proporcione un correo electrónico válido
         </div>
       </div>

@@ -60,4 +60,24 @@ export class UsersService{
     }
   }
 
+  async updateUser(user: Partial<User>): Promise<void> {
+    if (!user.correo) {
+      throw new Error('Email is required to update user');
+    }
+
+    const q = query(this.usersCollection, where('correo', '==', user.correo));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      const userRef = doc(this.firestore, 'users', userDoc.id);
+
+      // Filtrar los campos undefined y conservar el tipo Partial<User>
+      const userData: Partial<User> = Object.fromEntries(
+        Object.entries(user).filter(([_, v]) => v !== undefined)
+      ) as Partial<User>;
+
+      await updateDoc(userRef, userData);
+    }
+  }
+
 }

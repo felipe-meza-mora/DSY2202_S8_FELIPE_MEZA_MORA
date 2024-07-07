@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { validarRut } from '../../validators/rut.validator';
+import { UsersService } from '../../service/users.service';
+import { User } from '../../models/users.model';
 
 @Component({
   selector: 'app-perfil',
@@ -32,7 +34,7 @@ export class PerfilComponent implements OnInit {
 
   mensajeExito: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private userService : UsersService) {}
 
   /**
    * Método del ciclo de vida de Angular que se ejecuta al inicializar el componente.
@@ -43,7 +45,7 @@ export class PerfilComponent implements OnInit {
     this.formRegistro = this.fb.group({
       rut: ['', [Validators.required, validarRut]],
       nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      correo: ['', [Validators.required, Validators.email]],
       password: ['', this.passwordValidator()],
       confirmPassword: [''],
       telefono: ['', Validators.required],
@@ -60,16 +62,15 @@ export class PerfilComponent implements OnInit {
    */
 
   loadUserData(): void {
-    const sesionUsuario = localStorage.getItem('sesionUsuario');
-    if (sesionUsuario) {
-      const userData = JSON.parse(sesionUsuario);
+    const user = JSON.parse(localStorage.getItem('sesionUsuario') || '{}');
+    if (user) {
       this.formRegistro.patchValue({
-        rut: userData.rut,
-        nombre: userData.nombre,
-        email: userData.correo,
-        telefono: userData.telefono,
-        permisos: userData.permisos,
-        direccionEnvio: userData.direccionEnvio
+        rut: user.rut,
+        nombre: user.nombre,
+        correo: user.correo,
+        telefono: user.telefono,
+        permisos: user.permisos,
+        direccionEnvio: user.direccionEnvio
       });
       // El campo de la contraseña y confirmación se dejan en blanco por seguridad
     }
@@ -119,41 +120,42 @@ export class PerfilComponent implements OnInit {
    * Si el formulario es válido, actualiza los datos del usuario en el almacenamiento local y muestra un mensaje de éxito antes de redirigir al usuario.
    */
 
-  submitForm(): void {
+  async submitForm(): Promise<void> {
     if (this.formRegistro.valid) {
-      const updatedUserData = this.formRegistro.value;
+      const formData = this.formRegistro.value;
+      const sesionUsuario: User = JSON.parse(localStorage.getItem('sesionUsuario') || '{}');
+      let currentPassword = sesionUsuario.password;
 
-      const sesionUsuario = localStorage.getItem('sesionUsuario');
-      let currentPassword = '';
+      if (!formData.password) {
+        formData.password = currentPassword;
+      }
+      delete formData.confirmPassword;
 
-      if (sesionUsuario) {
-        const userData = JSON.parse(sesionUsuario);
-        currentPassword = userData.password;
+      try {
+        // Filtrar los campos undefined
+        const updatedUserData: Partial<User> = Object.fromEntries(
+          Object.entries(formData).filter(([_, v]) => v !== undefined)
+        ) as Partial<User>;
+
+        if (!updatedUserData.correo) {
+          throw new Error('Email is required to update user');
+        }
+
+        await this.userService.updateUser(updatedUserData as User);
+
+           // Verificar que updatedUserData.correo y updatedUserData.password no sean undefined
+      if (updatedUserData.password !== currentPassword && updatedUserData.correo && updatedUserData.password) {
+        await this.userService.updatePassword(updatedUserData.correo, updatedUserData.password);
       }
 
-      // Si no se proporcionan nuevas contraseñas, mantenemos la contraseña existente
-      if (!updatedUserData.password) {
-        updatedUserData.password = currentPassword;
+        localStorage.setItem('sesionUsuario', JSON.stringify({ ...sesionUsuario, ...updatedUserData }));
+        this.mensajeExito = 'Datos actualizados con éxito.';
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 4000);
+      } catch (error) {
+        console.error('Error actualizando usuario:', error);
       }
-      delete updatedUserData.confirmPassword;
-
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-      const index = usuarios.findIndex((user: any) => user.email === updatedUserData.email);
-
-      if (index !== -1) {
-        usuarios[index] = updatedUserData;
-      } else {
-        usuarios.push(updatedUserData);
-      }
-
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-      localStorage.setItem('sesionUsuario', JSON.stringify(updatedUserData));
-
-      this.mensajeExito = 'Datos actualizados con éxito.';
-      setTimeout(() => {
-        this.router.navigate(['/home']);
-      }, 4000);
-
     }
   }
 
