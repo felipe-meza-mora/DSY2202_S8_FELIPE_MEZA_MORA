@@ -9,6 +9,7 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
 import { SalesComponent } from './pages/sales/sales.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
+import { UsersComponent } from './pages/users/users.component';
 
 
 export const routes: Routes = [
@@ -22,6 +23,7 @@ export const routes: Routes = [
     { path: 'shopping-cart', component: ShoppingCartComponent},
     { path: 'sales', component: SalesComponent},
     { path: 'orders', component: OrdersComponent},
+    { path: 'users', component: UsersComponent},
     { path: '**', redirectTo: 'home' }
 ];
 

@@ -48,6 +48,20 @@ export class HeaderComponent {
 
   constructor(private productService: ProductService,private router: Router, private cdr: ChangeDetectorRef) {}
 
+  
+   /**
+   * Carga el nombre del usuario desde el almacenamiento local.
+   * Actualiza la propiedad `userName` con el nombre del usuario si está autenticado.
+   */
+
+   loadUserName(): void {
+    const sesionUsuario = localStorage.getItem('sesionUsuario');
+    if (sesionUsuario) {
+      const userData = JSON.parse(sesionUsuario);
+      this.userName = userData.nombre;
+    }
+  }
+
     /**
    * Método del ciclo de vida de Angular que se ejecuta al inicializar el componente.
    * Carga el nombre de usuario, verifica los permisos de administrador y suscribe cambios en el carrito.
@@ -81,18 +95,6 @@ export class HeaderComponent {
     return localStorage.getItem('sesionUsuario') !== null;
   }
 
-   /**
-   * Carga el nombre del usuario desde el almacenamiento local.
-   * Actualiza la propiedad `userName` con el nombre del usuario si está autenticado.
-   */
-
-  loadUserName(): void {
-    const sesionUsuario = localStorage.getItem('sesionUsuario');
-    if (sesionUsuario) {
-      const userData = JSON.parse(sesionUsuario);
-      this.userName = userData.nombre;
-    }
-  }
 
   /**
    * Verifica si el usuario tiene permisos de administrador.

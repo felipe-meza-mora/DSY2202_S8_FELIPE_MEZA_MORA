@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/users.model';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Firestore,collection,addDoc,doc,query,getDocs,where,updateDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Firestore,collection,addDoc,doc,query,deleteDoc,getDocs,where,updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -27,17 +25,36 @@ export class UsersService{
     return addDoc(this.usersCollection, user).then(() => {});
   }
 
+   /**
+   * Verifica si existe un usuario con el RUT proporcionado en Firestore.
+   * @param rut RUT del usuario a verificar.
+   * @returns Una promesa que se resuelve con true si el RUT está registrado, de lo contrario false.
+   */
+
   async isRutRegistered(rut: string): Promise<boolean> {
     const q = query(this.usersCollection, where('rut', '==', rut));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
 
+  /**
+   * Verifica si existe un usuario con el correo electrónico proporcionado en Firestore.
+   * @param email Correo electrónico del usuario a verificar.
+   * @returns Una promesa que se resuelve con true si el correo electrónico está registrado, de lo contrario false.
+   */
+
   async isEmailRegistered(email: string): Promise<boolean> {
     const q = query(this.usersCollection, where('correo', '==', email));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
+
+    /**
+   * Valida las credenciales de inicio de sesión de un usuario en Firestore.
+   * @param email Correo electrónico del usuario.
+   * @param password Contraseña del usuario.
+   * @returns Una promesa que se resuelve con los datos del usuario si las credenciales son válidas, de lo contrario null.
+   */
 
   async validateUser(email: string, password: string): Promise<User | null> {
     const q = query(this.usersCollection, where('correo', '==', email), where('password', '==', password));
@@ -48,7 +65,13 @@ export class UsersService{
     }
     return null;
   }
-
+  
+    /**
+   * Actualiza la contraseña de un usuario en Firestore.
+   * @param email Correo electrónico del usuario cuya contraseña se actualizará.
+   * @param newPassword Nueva contraseña del usuario.
+   * @returns Una promesa que se resuelve cuando se completa la actualización de la contraseña.
+   */
 
   async updatePassword(email: string, newPassword: string): Promise<void> {
     const q = query(this.usersCollection, where('correo', '==', email));
@@ -60,7 +83,14 @@ export class UsersService{
     }
   }
 
-  async updateUser(user: Partial<User>): Promise<void> {
+   /**
+   * Actualiza los datos de un usuario en Firestore.
+   * @param user Objeto parcial del usuario con los campos a actualizar.
+   * @returns Una promesa que se resuelve cuando se completa la actualización de los datos del usuario.
+   * @throws Error si el correo electrónico del usuario no está definido.
+   */
+
+ async updateUser(user: Partial<User>): Promise<void> {
     if (!user.correo) {
       throw new Error('Email is required to update user');
     }
@@ -78,6 +108,39 @@ export class UsersService{
 
       await updateDoc(userRef, userData);
     }
+  }
+
+   /**
+   * Obtiene todos los usuarios de la colección en Firestore.
+   * @returns Una promesa que se resuelve con un arreglo de usuarios.
+   * @throws Error si ocurre un problema al obtener los usuarios.
+   */
+
+  async getUsers(): Promise<User[]> {
+    try {
+      const querySnapshot = await getDocs(collection(this.firestore, 'users'));
+      const users: User[] = [];
+      querySnapshot.forEach(doc => {
+        const userData = doc.data() as User;
+        const user: User = { ...userData, id: doc.id };
+        users.push(user);
+      });
+      return users;
+    } catch (error) {
+      console.error('Error al obtener usuarios:', error);
+      throw error;
+    }
+  }
+
+   /**
+   * Elimina un usuario de Firestore según su ID.
+   * @param id ID del usuario que se eliminará.
+   * @returns Una promesa que se resuelve cuando se completa la eliminación del usuario.
+   */
+
+  deleteUser(id: string): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${id}`);
+    return deleteDoc(userDoc);
   }
 
 }

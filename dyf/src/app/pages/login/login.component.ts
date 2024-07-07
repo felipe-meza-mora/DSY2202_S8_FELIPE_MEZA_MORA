@@ -60,33 +60,39 @@ export class LoginComponent implements OnInit {
    * Guarda la sesión del usuario en localStorage y navega a la página principal si las credenciales son válidas.
    * Muestra mensajes de error si las credenciales no son válidas.
    */
-
-  async onSubmit(): Promise<void> {
+   async onSubmit(): Promise<void> {
     const email = this.formLogin.get('email')?.value;
     const password = this.formLogin.get('password')?.value;
 
     try {
       const usuario = await this.usersService.validateUser(email, password);
       if (usuario) {
-        // Guardar la sesión del usuario en localStorage
-        localStorage.setItem('sesionUsuario', JSON.stringify(usuario));
+        // Guardar solo el correo electrónico, permisos y nombre en localStorage
+        const userData = {
+          rut: usuario.rut,
+          email: usuario.correo,
+          permisos: usuario.permisos,
+          nombre: usuario.nombre,
+          correo: usuario.correo,
+          telefono: usuario.telefono,
+          direccionEnvio: usuario.direccionEnvio
+        };
+        localStorage.setItem('sesionUsuario', JSON.stringify(userData));
 
         // Navegar a la página principal
-        this.router.navigate(['/']); 
-        //window.location.reload();
-        //window.location.href = '/';
-
+        this.router.navigate(['/']);
+        
         // Limpiar mensaje de error si hubiera alguno previo
-        this.mensajeError = null; 
-        // Reiniciar el estado de correo no registrado
-        this.correoNoRegistrado = false; 
+        this.mensajeError = null;
+        this.correoNoRegistrado = false;
       } else {
         this.mensajeError = 'La contraseña ingresada es incorrecta';
-        this.correoNoRegistrado = true; // Establecer el estado de correo no registrado
+        this.correoNoRegistrado = true;
       }
     } catch (error) {
       console.error("Error al iniciar sesión: ", error);
       this.mensajeError = 'Hubo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.';
     }
   }
+  
 }
