@@ -228,6 +228,7 @@
                                 <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#onSubmit" >onSubmit</a>
                             </li>
                         </ul>
@@ -248,7 +249,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: FormBuilder, router: Router)</code>
+<code>constructor(fb: FormBuilder, router: Router, usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -287,6 +288,18 @@
                                                   
                                                         <td>
                                                                     <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>usersService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UsersService.html" target="_self" >UsersService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -358,6 +371,7 @@ Crea el FormGroup para el formulario de inicio de sesión con validaciones de co
                 <td class="col-md-4">
                     <a name="onSubmit"></a>
                     <span class="name">
+                            <span class="modifier">Async</span>
                         <span ><b>onSubmit</b></span>
                         <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -365,15 +379,16 @@ Crea el FormGroup para el formulario de inicio de sesión con validaciones de co
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onSubmit()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSubmit()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/app/pages/login/login.component.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/app/pages/login/login.component.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -387,7 +402,7 @@ Muestra mensajes de error si las credenciales no son válidas.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                         </div>
                 </td>
@@ -510,7 +525,7 @@ Muestra mensajes de error si las credenciales no son válidas.</p>
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { Router } from &#x27;@angular/router&#x27;;
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from &#x27;@angular/forms&#x27;;
-
+import { UsersService } from &#x27;../../service/users.service&#x27;;
 
 @Component({
   selector: &#x27;app-login&#x27;,
@@ -547,7 +562,7 @@ export class LoginComponent implements OnInit {
   correoNoRegistrado &#x3D; false;
 
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private usersService: UsersService) {}
 
 
   /**
@@ -568,79 +583,81 @@ export class LoginComponent implements OnInit {
    * Guarda la sesión del usuario en localStorage y navega a la página principal si las credenciales son válidas.
    * Muestra mensajes de error si las credenciales no son válidas.
    */
-
-  onSubmit(): void {
+   async onSubmit(): Promise&lt;void&gt; {
     const email &#x3D; this.formLogin.get(&#x27;email&#x27;)?.value;
     const password &#x3D; this.formLogin.get(&#x27;password&#x27;)?.value;
 
-    // Obtener usuarios del localStorage
-    const usuarios &#x3D; JSON.parse(localStorage.getItem(&#x27;usuarios&#x27;) || &#x27;[]&#x27;);
-
-    // Verificar si el correo electrónico está registrado
-    const usuarioRegistrado &#x3D; usuarios.find((usuario: any) &#x3D;&gt; usuario.email &#x3D;&#x3D;&#x3D; email);
-
-    if (usuarioRegistrado) {
-      if (usuarioRegistrado.password &#x3D;&#x3D;&#x3D; password) {
-        // Guardar la sesión del usuario en localStorage
-        localStorage.setItem(&#x27;sesionUsuario&#x27;, JSON.stringify(usuarioRegistrado));
+    try {
+      const usuario &#x3D; await this.usersService.validateUser(email, password);
+      if (usuario) {
+        // Guardar solo el correo electrónico, permisos y nombre en localStorage
+        const userData &#x3D; {
+          rut: usuario.rut,
+          email: usuario.correo,
+          permisos: usuario.permisos,
+          nombre: usuario.nombre,
+          correo: usuario.correo,
+          telefono: usuario.telefono,
+          direccionEnvio: usuario.direccionEnvio
+        };
+        localStorage.setItem(&#x27;sesionUsuario&#x27;, JSON.stringify(userData));
 
         // Navegar a la página principal
+        this.router.navigate([&#x27;/&#x27;]);
         
-        //this.router.navigate([&#x27;/&#x27;]); 
-        window.location.reload();
-        window.location.href &#x3D; &#x27;/&#x27;;
-
         // Limpiar mensaje de error si hubiera alguno previo
-        this.mensajeError &#x3D; null; 
-        // Reiniciar el estado de correo no registrado
-        this.correoNoRegistrado &#x3D; false; 
+        this.mensajeError &#x3D; null;
+        this.correoNoRegistrado &#x3D; false;
       } else {
         this.mensajeError &#x3D; &#x27;La contraseña ingresada es incorrecta&#x27;;
+        this.correoNoRegistrado &#x3D; true;
       }
-    } else {
-      this.correoNoRegistrado &#x3D; true; // Establecer el estado de correo no registrado
+    } catch (error) {
+      console.error(&quot;Error al iniciar sesión: &quot;, error);
+      this.mensajeError &#x3D; &#x27;Hubo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.&#x27;;
     }
   }
+  
 }</code></pre>
     </div>
 
     <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;d-flex justify-content-center align-items-center vh-100&quot;&gt;
-    &lt;div class&#x3D;&quot;card p-4&quot; style&#x3D;&quot;max-width: 500px; width: 100%;&quot;&gt;
-      &lt;h3 class&#x3D;&quot;card-title text-center mb-4&quot;&gt;Iniciar Sesión&lt;/h3&gt;
-      &lt;form [formGroup]&#x3D;&quot;formLogin&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
-        &lt;div class&#x3D;&quot;mb-3&quot;&gt;
-          &lt;label for&#x3D;&quot;email&quot; class&#x3D;&quot;form-label&quot;&gt;Correo Electrónico&lt;/label&gt;
-          &lt;input type&#x3D;&quot;email&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;email&quot; formControlName&#x3D;&quot;email&quot;&gt;
-          &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
-            El correo electrónico es requerido
-          &lt;/div&gt;
-          &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;email&#x27;) &amp;&amp; !formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
-            Proporcione un correo electrónico válido
-          &lt;/div&gt;
-          &lt;div *ngIf&#x3D;&quot;correoNoRegistrado&quot; class&#x3D;&quot;text-danger&quot;&gt;
-            El correo electrónico no está registrado
-          &lt;/div&gt;
+  &lt;div class&#x3D;&quot;card p-4&quot; style&#x3D;&quot;max-width: 500px; width: 100%;&quot;&gt;
+    &lt;h3 class&#x3D;&quot;card-title text-center mb-4&quot;&gt;Iniciar Sesión&lt;/h3&gt;
+    &lt;form [formGroup]&#x3D;&quot;formLogin&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
+      &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+        &lt;label for&#x3D;&quot;email&quot; class&#x3D;&quot;form-label&quot;&gt;Correo Electrónico&lt;/label&gt;
+        &lt;input type&#x3D;&quot;email&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;email&quot; formControlName&#x3D;&quot;email&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
+          El correo electrónico es requerido
         &lt;/div&gt;
-        &lt;div class&#x3D;&quot;mb-3&quot;&gt;
-          &lt;label for&#x3D;&quot;password&quot; class&#x3D;&quot;form-label&quot;&gt;Contraseña&lt;/label&gt;
-          &lt;input type&#x3D;&quot;password&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;password&quot; formControlName&#x3D;&quot;password&quot;&gt;
-          &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;password&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
-            La contraseña es requerida
-          &lt;/div&gt;
-          &lt;div *ngIf&#x3D;&quot;mensajeError&quot; class&#x3D;&quot;text-danger&quot;&gt;
-            {{ mensajeError }}
-          &lt;/div&gt;
+        &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;email&#x27;) &amp;&amp; !formLogin.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
+          Proporcione un correo electrónico válido
         &lt;/div&gt;
-        &lt;div class&#x3D;&quot;mb-3&quot;&gt;
-          &lt;a href&#x3D;&quot;change-password&quot; class&#x3D;&quot;text-decoration-none&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;
+        &lt;div *ngIf&#x3D;&quot;correoNoRegistrado&quot; class&#x3D;&quot;text-danger&quot;&gt;
+          El correo electrónico no está registrado
         &lt;/div&gt;
-        &lt;div class&#x3D;&quot;mb-3 d-grid&quot;&gt;
-          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-warning text-white&quot;&gt;Iniciar Sesión&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+        &lt;label for&#x3D;&quot;password&quot; class&#x3D;&quot;form-label&quot;&gt;Contraseña&lt;/label&gt;
+        &lt;input type&#x3D;&quot;password&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;password&quot; formControlName&#x3D;&quot;password&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;formLogin.get(&#x27;password&#x27;)?.hasError(&#x27;required&#x27;)&quot; class&#x3D;&quot;text-danger&quot;&gt;
+          La contraseña es requerida
         &lt;/div&gt;
-      &lt;/form&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;</code></pre>
+        &lt;div *ngIf&#x3D;&quot;mensajeError&quot; class&#x3D;&quot;text-danger&quot;&gt;
+          {{ mensajeError }}
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+        &lt;a href&#x3D;&quot;change-password&quot; class&#x3D;&quot;text-decoration-none&quot;&gt;¿Olvidaste tu contraseña?&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;mb-3 d-grid&quot;&gt;
+        &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-warning text-white&quot;&gt;Iniciar Sesión&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
     </div>
 
     <div class="tab-pane fade " id="styleData">
@@ -675,8 +692,8 @@ export class LoginComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="d-flex justify-content-center align-items-center vh-100">    <div class="card p-4" style="max-width: 500px; width: 100%;">      <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>      <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">        <div class="mb-3">          <label for="email" class="form-label">Correo Electrónico</label>          <input type="email" class="form-control" id="email" formControlName="email">          <div *ngIf="formLogin.get(\'email\')?.hasError(\'required\')" class="text-danger">            El correo electrónico es requerido          </div>          <div *ngIf="formLogin.get(\'email\')?.hasError(\'email\') && !formLogin.get(\'email\')?.hasError(\'required\')" class="text-danger">            Proporcione un correo electrónico válido          </div>          <div *ngIf="correoNoRegistrado" class="text-danger">            El correo electrónico no está registrado          </div>        </div>        <div class="mb-3">          <label for="password" class="form-label">Contraseña</label>          <input type="password" class="form-control" id="password" formControlName="password">          <div *ngIf="formLogin.get(\'password\')?.hasError(\'required\')" class="text-danger">            La contraseña es requerida          </div>          <div *ngIf="mensajeError" class="text-danger">            {{ mensajeError }}          </div>        </div>        <div class="mb-3">          <a href="change-password" class="text-decoration-none">¿Olvidaste tu contraseña?</a>        </div>        <div class="mb-3 d-grid">          <button type="submit" class="btn btn-warning text-white">Iniciar Sesión</button>        </div>      </form>    </div>  </div></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChangePasswordComponent', 'selector': 'app-change-password'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'OrdersComponent', 'selector': 'app-orders'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'SalesComponent', 'selector': 'app-sales'},{'name': 'ShoppingCartComponent', 'selector': 'app-shopping-cart'},{'name': 'SignUpComponent', 'selector': 'app-sign-up'}];
+        var COMPONENT_TEMPLATE = '<div><div class="d-flex justify-content-center align-items-center vh-100">  <div class="card p-4" style="max-width: 500px; width: 100%;">    <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">      <div class="mb-3">        <label for="email" class="form-label">Correo Electrónico</label>        <input type="email" class="form-control" id="email" formControlName="email">        <div *ngIf="formLogin.get(\'email\')?.hasError(\'required\')" class="text-danger">          El correo electrónico es requerido        </div>        <div *ngIf="formLogin.get(\'email\')?.hasError(\'email\') && !formLogin.get(\'email\')?.hasError(\'required\')" class="text-danger">          Proporcione un correo electrónico válido        </div>        <div *ngIf="correoNoRegistrado" class="text-danger">          El correo electrónico no está registrado        </div>      </div>      <div class="mb-3">        <label for="password" class="form-label">Contraseña</label>        <input type="password" class="form-control" id="password" formControlName="password">        <div *ngIf="formLogin.get(\'password\')?.hasError(\'required\')" class="text-danger">          La contraseña es requerida        </div>        <div *ngIf="mensajeError" class="text-danger">          {{ mensajeError }}        </div>      </div>      <div class="mb-3">        <a href="change-password" class="text-decoration-none">¿Olvidaste tu contraseña?</a>      </div>      <div class="mb-3 d-grid">        <button type="submit" class="btn btn-warning text-white">Iniciar Sesión</button>      </div>    </form>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChangePasswordComponent', 'selector': 'app-change-password'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'OrdersComponent', 'selector': 'app-orders'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'SalesComponent', 'selector': 'app-sales'},{'name': 'ShoppingCartComponent', 'selector': 'app-shopping-cart'},{'name': 'SignUpComponent', 'selector': 'app-sign-up'},{'name': 'UsersComponent', 'selector': 'app-users'}];
     var DIRECTIVES = [{'name': 'RutFormatDirective', 'selector': '[appRutFormat]'}];
     var ACTUAL_COMPONENT = {'name': 'LoginComponent'};
 </script>

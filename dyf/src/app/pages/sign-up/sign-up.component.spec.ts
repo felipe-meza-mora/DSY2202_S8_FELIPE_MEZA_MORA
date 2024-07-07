@@ -26,6 +26,7 @@ describe('SignUpComponent', () => {
       isRutRegistered: jasmine.createSpy('isRutRegistered').and.returnValue(of(false)),
     };
 
+    // Configuración del entorno de pruebas de Angular
     await TestBed.configureTestingModule({
       imports: [
         CommonModule,
@@ -37,17 +38,21 @@ describe('SignUpComponent', () => {
         ...appConfig.providers,
       ]
     }).compileComponents();
-
+    
+     // Crea una instancia del componente y obtiene el fixture
     fixture = TestBed.createComponent(SignUpComponent);
     component = fixture.componentInstance;
     usersService = TestBed.inject(UsersService);
     fixture.detectChanges();
   });
 
+
+  // Prueba: Debería asegurarse de que el componente se crea correctamente
   it('Debería crear', () => {
     expect(component).toBeTruthy();
   });
-
+ 
+    // Prueba: Debería inicializar el formulario de registro
   it('Debería inicializar el formulario ', () => {
     expect(component.formRegistro).toBeDefined();
     expect(component.formRegistro.get('rut')).toBeDefined();
@@ -62,7 +67,8 @@ describe('SignUpComponent', () => {
   afterEach(() => {
     component.formRegistro.reset();
   });
-
+  
+  // Prueba: Debería requerir que las contraseñas coincidan
   it('Debería requerir que las contraseñas coincidan', () => {
     const form = component.formRegistro;
     if (form !== null && form !== undefined) {
@@ -75,7 +81,8 @@ describe('SignUpComponent', () => {
       expect(form.hasError('passwordMismatch')).toBeTruthy();
     }
   });
-
+  
+  // Prueba: Debería requerir al menos una letra mayúscula en la contraseña
   it('Debería requerir al menos una letra mayúscula en la contraseña', () => {
     const form = component.formRegistro;
     if (form !== null && form !== undefined) {
@@ -88,6 +95,7 @@ describe('SignUpComponent', () => {
     }
   });
 
+  // Prueba: Debería requerir al menos una letra minúscula en la contraseña
   it('Debería requerir al menos una letra minúscula en la contraseña', () => {
     const form = component.formRegistro;
     if (form !== null && form !== undefined) {
@@ -99,7 +107,8 @@ describe('SignUpComponent', () => {
       expect(form.get('password')?.hasError('missingLowercase')).toBeTruthy();
     }
   });
-
+  
+  // Prueba: Debería requerir al menos un número en la contraseña
   it('Debería requerir al menos un número en la contraseña', () => {
     const form = component.formRegistro;
     if (form !== null && form !== undefined) {

@@ -121,6 +121,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             <li class="link">
                                 <a href="components/SignUpComponent.html" data-type="entity-link" >SignUpComponent</a>
                             </li>
+                            <li class="link">
+                                <a href="components/UsersComponent.html" data-type="entity-link" >UsersComponent</a>
+                            </li>
                         </ul>
                     </li>
                         <li class="chapter">
@@ -134,6 +137,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <li class="link">
                                     <a href="injectables/ProductService.html" data-type="entity-link" >ProductService</a>
                                 </li>
+                                <li class="link">
+                                    <a href="injectables/UsersService.html" data-type="entity-link" >UsersService</a>
+                                </li>
                             </ul>
                         </li>
                     <li class="chapter">
@@ -146,6 +152,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
                                 <a href="interfaces/Product.html" data-type="entity-link" >Product</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/User.html" data-type="entity-link" >User</a>
                             </li>
                         </ul>
                     </li>

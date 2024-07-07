@@ -143,7 +143,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#products" >products</a>
+                                <a href="#productsCollection" >productsCollection</a>
                             </li>
                         </ul>
                     </td>
@@ -158,13 +158,22 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#addProduct" >addProduct</a>
+                            </li>
+                            <li>
                                 <a href="#addToCart" >addToCart</a>
+                            </li>
+                            <li>
+                                <a href="#checkProductIdExists" >checkProductIdExists</a>
                             </li>
                             <li>
                                 <a href="#clearCart" >clearCart</a>
                             </li>
                             <li>
                                 <a href="#decrementQuantity" >decrementQuantity</a>
+                            </li>
+                            <li>
+                                <a href="#deleteProduct" >deleteProduct</a>
                             </li>
                             <li>
                                 <a href="#getCart" >getCart</a>
@@ -182,6 +191,9 @@
                                     <span class="modifier">Private</span>
                                 <a href="#updateCart" >updateCart</a>
                             </li>
+                            <li>
+                                <a href="#updateProduct" >updateProduct</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -194,12 +206,135 @@
     </table>
 </section>
 
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(firestore: Firestore)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/service/product.service.ts:23</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>firestore</td>
+                                                  
+                                                        <td>
+                                                                    <code>Firestore</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
             <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addProduct"></a>
+                    <span class="name">
+                        <span ><b>addProduct</b></span>
+                        <a href="#addProduct"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addProduct(product: <a href="../interfaces/Product.html" target="_self">Product</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/app/service/product.service.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Añade un nuevo producto a la colección de productos en Firestore.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>product</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Product.html" target="_self" >Product</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>El producto que se añadirá a Firestore.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Una promesa que se resuelve cuando se completa la operación de añadir el producto.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -220,8 +355,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="129"
-                                    class="link-to-prism">src/app/service/product.service.ts:129</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/app/service/product.service.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -279,6 +414,81 @@ Si el producto ya existe en el carrito, incrementa la cantidad; de lo contrario,
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="checkProductIdExists"></a>
+                    <span class="name">
+                        <span ><b>checkProductIdExists</b></span>
+                        <a href="#checkProductIdExists"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkProductIdExists(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/app/service/product.service.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica si existe un producto con el ID especificado en Firestore.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>El ID del producto que se verificará.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Una promesa que se resuelve con true si el documento existe, o false si no existe.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="clearCart"></a>
                     <span class="name">
                         <span ><b>clearCart</b></span>
@@ -295,8 +505,8 @@ Si el producto ya existe en el carrito, incrementa la cantidad; de lo contrario,
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="187"
-                                    class="link-to-prism">src/app/service/product.service.ts:187</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="166"
+                                    class="link-to-prism">src/app/service/product.service.ts:166</a></div>
                         </td>
                     </tr>
 
@@ -335,8 +545,8 @@ Elimina todos los productos del carrito y actualiza el estado almacenado en loca
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="160"
-                                    class="link-to-prism">src/app/service/product.service.ts:160</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/app/service/product.service.ts:139</a></div>
                         </td>
                     </tr>
 
@@ -394,6 +604,81 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="deleteProduct"></a>
+                    <span class="name">
+                        <span ><b>deleteProduct</b></span>
+                        <a href="#deleteProduct"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteProduct(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/app/service/product.service.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina un producto de la colección en Firestore.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>El ID del producto que se eliminará.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Una promesa que se resuelve cuando se completa la operación de eliminar el producto.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getCart"></a>
                     <span class="name">
                         <span ><b>getCart</b></span>
@@ -410,8 +695,8 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="177"
-                                    class="link-to-prism">src/app/service/product.service.ts:177</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="156"
+                                    class="link-to-prism">src/app/service/product.service.ts:156</a></div>
                         </td>
                     </tr>
 
@@ -446,15 +731,15 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getProductById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>getProductById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="119"
-                                    class="link-to-prism">src/app/service/product.service.ts:119</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/app/service/product.service.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -480,7 +765,7 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
                                         <tr>
                                                 <td>id</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
 
                                             <td>
@@ -497,7 +782,7 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/Product.html" target="_self" >Product | undefined</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/Product.html" target="_self" >Observable&lt;Product | undefined&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -528,8 +813,8 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="109"
-                                    class="link-to-prism">src/app/service/product.service.ts:109</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/app/service/product.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -540,7 +825,7 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/Product.html" target="_self" >Product[]</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/Product.html" target="_self" >Observable&lt;Product[]&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -571,8 +856,8 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="145"
-                                    class="link-to-prism">src/app/service/product.service.ts:145</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/app/service/product.service.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -647,8 +932,8 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="197"
-                                    class="link-to-prism">src/app/service/product.service.ts:197</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/app/service/product.service.ts:176</a></div>
                         </td>
                     </tr>
 
@@ -701,6 +986,97 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateProduct"></a>
+                    <span class="name">
+                        <span ><b>updateProduct</b></span>
+                        <a href="#updateProduct"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateProduct(id: string | number, product: <a href="../interfaces/Product.html" target="_self">Partial&lt;Product&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/app/service/product.service.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Actualiza un producto existente en Firestore.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                        <code>string | number</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>El ID del producto que se actualizará.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>product</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Product.html" target="_self" >Partial&lt;Product&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Objeto parcial que contiene los campos actualizados del producto.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Una promesa que se resuelve cuando se completa la operación de actualizar el producto.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
             <section data-compodoc="block-properties">
     
@@ -726,10 +1102,17 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/service/product.service.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/service/product.service.ts:31</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>BehaviorSubject que contiene el carrito de compras.
+Emite un arreglo de objetos que contienen productos y cantidades.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -751,7 +1134,7 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/app/service/product.service.ts:101</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/service/product.service.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -762,114 +1145,32 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="products"></a>
+                    <a name="productsCollection"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>products</b></span>
-                        <a href="#products"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>productsCollection</b></span>
+                        <a href="#productsCollection"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/Product.html" target="_self" >Product[]</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>[ 
-        {
-            &quot;precio&quot;: 5690,
-            &quot;id&quot;: 1,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Disfruta de nuestras irresistibles papas fritas con sonrisa, el acompañamiento perfecto que eleva cada comida a otro nivel de satisfacción. Crujientes por fuera y suaves por dentro, nuestras papas fritas están meticulosamente preparadas para asegurar un sabor y textura inigualables. Ya sea que las sirvas como complemento de una hamburguesa jugosa o las disfrutes solas con tu salsa favorita, cada bocado te hará sonreír. Sumérgete en la delicia de estas papas fritas doradas y experimenta cómo transforman cualquier plato en una experiencia gastronómica memorable.&quot;,
-            &quot;title&quot;: &quot;Papa Smile McCain 1,5 kg&quot;,
-            
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/smile.png&quot;
-        },
-        {
-            &quot;precio&quot;: 5990,
-            &quot;id&quot;: 2,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras exquisitas papas fritas 12x12, el acompañamiento perfecto para elevar el sabor de tus comidas. Cortadas en un formato cuadrado de 12 por 12 milímetros, estas papas fritas están diseñadas para ofrecer la combinación ideal de crujiente dorado por fuera y suavidad irresistible por dentro. Perfectas para acompañar cualquier platillo, desde hamburguesas gourmet hasta platos principales y ensaladas, nuestras papas fritas 12x12 añaden un toque de calidad y sabor a cada bocado. Experimenta la perfección en cada mordisco y convierte cada comida en una experiencia deliciosa y memorable.&quot;,
-            &quot;title&quot;: &quot;Papas fritas 12x12 onefry  2,5 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/12x12.png&quot;
-        },
-        {
-            &quot;precio&quot;: 6990,
-            &quot;id&quot;: 3,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras deliciosas papas fritas 6x6, el acompañamiento perfecto para realzar tus comidas. Cortadas en un tamaño cuadrado de 6 por 6 milímetros, estas papas fritas están diseñadas para ofrecer una combinación excepcional de crujiente en cada bocado y una textura interior suave y sabrosa. Ideales para acompañar una amplia variedad de platos, desde hamburguesas jugosas hasta platos principales gourmet y ensaladas frescas, nuestras papas fritas 6x6 añaden un toque de calidad y sabor a cada comida. Disfruta de la perfección en cada mordisco y transforma tus platos habituales en una experiencia gastronómica memorable.&quot;,
-            &quot;title&quot;: &quot;Papas Fritas Mccain 6x6 mm 2,5kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/6x6.png&quot;
-        },
-        {
-            &quot;precio&quot;: 7990,
-            &quot;id&quot;: 4,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras deliciosas papas fritas crinkle, el acompañamiento ideal para tus comidas. Con su característico corte ondulado, estas papas fritas no solo ofrecen una textura crujiente y dorada por fuera, sino también una suavidad irresistible por dentro. Su diseño único permite capturar más salsa en cada bocado, haciendo que cada experiencia sea aún más sabrosa. Perfectas para acompañar hamburguesas, sándwiches, o cualquier plato principal, nuestras papas fritas crinkle aportan un toque de diversión y sabor a tu mesa. Disfruta de una explosión de sabor y textura en cada mordisco y transforma tus comidas cotidianas en momentos especiales y memorables.&quot;,
-            &quot;title&quot;: &quot;Papa Crinkle Mccain 2.5kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/crinkle.png&quot;
-        },
-        {
-            &quot;precio&quot;:17990 ,
-            &quot;id&quot;: 5,
-            &quot;categoria&quot;:&quot;Aceites&quot;,
-            &quot;marca&quot;: &quot;Maxi Frits&quot;,
-            &quot;descripcion&quot;: &quot;Descubre la calidad superior de nuestro aceite, especialmente formulado para freír tus comidas a la perfección. Este aceite es ideal para lograr frituras crujientes y doradas, manteniendo el sabor auténtico de cada ingrediente. Su alta resistencia al calor garantiza una cocción uniforme y evita la degradación rápida, permitiéndote disfrutar de platos fritos más saludables y sabrosos. Perfecto para freír desde papas y empanadas hasta pollo y mariscos, nuestro aceite es el aliado esencial en tu cocina para obtener resultados profesionales en cada preparación. Dale a tus recetas favoritas el toque perfecto con nuestro aceite de calidad superior y transforma tus comidas en experiencias culinarias inolvidables.&quot;,  
-            &quot;title&quot;: &quot;Aceite Maxi Frits 20 Lts&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/frits.png&quot;
-        },
-        {
-            &quot;precio&quot;:12990 ,
-            &quot;id&quot;: 6,
-            &quot;categoria&quot;:&quot;Aceites&quot;,
-            &quot;marca&quot;: &quot;Maxi Frits&quot;,
-            &quot;descripcion&quot;: &quot;Presentamos nuestro Aceite Maxi Frits de 5 litros, la elección perfecta para todas tus necesidades de freír en la cocina. Este aceite de alta calidad está diseñado para ofrecer un rendimiento excepcional, brindando una fritura crujiente y dorada con cada uso. Su fórmula avanzada resiste altas temperaturas, garantizando una cocción uniforme y reduciendo la absorción de grasa, lo que resulta en comidas más ligeras y saludables. Ideal para grandes familias, restaurantes o cualquier cocina que requiera un suministro generoso de aceite confiable, el Aceite Maxi Prits de 5 litros es perfecto para freír papas, pollo, mariscos y mucho más. Con su tamaño conveniente, puedes estar seguro de que siempre tendrás suficiente aceite a mano para todas tus necesidades culinarias. Mejora la calidad de tus frituras y disfruta de comidas deliciosas con nuestro Aceite Maxi Prits de 5 litros.&quot;,
-            &quot;title&quot;: &quot;Aceite Maxi Frits 5 Lts&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/frits5.png&quot;
-        },
-        {
-            &quot;precio&quot;:15990 ,
-            &quot;id&quot;: 7,
-            &quot;categoria&quot;:&quot;Pollo&quot;,
-            &quot;marca&quot;: &quot;Sadia&quot;,
-            &quot;descripcion&quot;: &quot;Descubre la deliciosa calidad de nuestros Nuggets Sadia de 2 kg, hechos con pollo de primera. Estos nuggets son el acompañamiento perfecto para cualquier comida, ofreciendo una combinación irresistible de una cubierta crujiente y un interior jugoso y tierno. Ideal para toda la familia, cada bocado está lleno de sabor y satisfacción. Su preparación es rápida y sencilla, ya sea al horno, en la freidora de aire o fritos en sartén, lo que los convierte en una opción conveniente para comidas rápidas y deliciosas. Perfectos para servir con salsas variadas, ensaladas o como parte de un plato principal, los Nuggets Sadia de 2 kg son una opción versátil y deliciosa que todos disfrutarán. Asegúrate de tener siempre a mano estos nuggets para transformar cualquier comida en una experiencia culinaria deliciosa y reconfortante.&quot;,  
-            &quot;title&quot;: &quot;Nuggets Sadia 2 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/nuggets.png&quot;
-        },
-        {
-            &quot;precio&quot;:12990 ,
-            &quot;id&quot;: 8,
-            &quot;categoria&quot;:&quot;Pollo&quot;,
-            &quot;marca&quot;: &quot;Sadia&quot;,
-            &quot;descripcion&quot;: &quot;Disfruta de la calidad y el sabor inigualable de nuestras Alitas Chicken Wings Sadia de 2 kg. Estas alitas de pollo son perfectas para cualquier ocasión, ya sea una reunión familiar, una fiesta con amigos o una cena informal. Preparadas con los mejores ingredientes, nuestras alitas son jugosas por dentro y tienen una piel crujiente que te hará querer más.Fáciles de cocinar, puedes prepararlas al horno, en la parrilla o fritas, logrando siempre un resultado delicioso y apetitoso. Las Alitas Chicken Wings Sadia son ideales para acompañar con tus salsas favoritas, desde la clásica barbacoa hasta una picante de búfalo, adaptándose a todos los gustos. Con un tamaño conveniente de 2 kg, son perfectas para compartir y garantizar que siempre haya suficiente para todos.&quot;,
-            &quot;title&quot;: &quot;Alitas Chicken Wings Sadia 2 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/alitas.png&quot;
-        },
-        {
-            &quot;precio&quot;:15990,
-            &quot;id&quot;: 9,
-            &quot;categoria&quot;:&quot;Aros de Cebolla&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre los exquisitos Aros de Cebolla McCain de 1,5 kg, el complemento perfecto para cualquier comida o aperitivo. Estos aros de cebolla están elaborados con cebollas frescas, rebozadas en una crujiente capa dorada que garantiza una textura inigualable y un sabor delicioso en cada mordisco. Ideales para servir como guarnición, aperitivo o incluso como un sabroso snack, los Aros de Cebolla McCain son fáciles de preparar. Puedes cocinarlos al horno, en la freidora de aire o fritos en sartén, logrando siempre un resultado perfecto en pocos minutos.&quot;,
-            &quot;title&quot;: &quot;Aros de Cebolla McCain 1,5 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/aros.png&quot;
-        }
-    ]</code>
+                        <i>Default value : </i><code>collection(this.firestore, &#x27;products&#x27;)</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/service/product.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/service/product.service.ts:23</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Servicio para la gestión de productos.
+Proporciona métodos para agregar, actualizar, y eliminar productos en Firestore.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -881,7 +1182,9 @@ Si la cantidad alcanza 0, el producto se elimina del carrito.</p>
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &quot;@angular/core&quot;;
 import { Product} from &quot;../models/product.model&quot;;
-import { BehaviorSubject } from &quot;rxjs&quot;;
+import { BehaviorSubject, Observable } from &quot;rxjs&quot;;
+import { Firestore,collectionData, collection,doc,docData,getDoc,setDoc,updateDoc,deleteDoc } from &quot;@angular/fire/firestore&quot;;
+import { map } from &#x27;rxjs/operators&#x27;;
 
 @Injectable({
     providedIn: &#x27;root&#x27;
@@ -893,103 +1196,78 @@ import { BehaviorSubject } from &quot;rxjs&quot;;
  */
 
 export class ProductService{ 
-    private products: Product[] &#x3D; [ 
-        {
-            &quot;precio&quot;: 5690,
-            &quot;id&quot;: 1,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Disfruta de nuestras irresistibles papas fritas con sonrisa, el acompañamiento perfecto que eleva cada comida a otro nivel de satisfacción. Crujientes por fuera y suaves por dentro, nuestras papas fritas están meticulosamente preparadas para asegurar un sabor y textura inigualables. Ya sea que las sirvas como complemento de una hamburguesa jugosa o las disfrutes solas con tu salsa favorita, cada bocado te hará sonreír. Sumérgete en la delicia de estas papas fritas doradas y experimenta cómo transforman cualquier plato en una experiencia gastronómica memorable.&quot;,
-            &quot;title&quot;: &quot;Papa Smile McCain 1,5 kg&quot;,
-            
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/smile.png&quot;
-        },
-        {
-            &quot;precio&quot;: 5990,
-            &quot;id&quot;: 2,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras exquisitas papas fritas 12x12, el acompañamiento perfecto para elevar el sabor de tus comidas. Cortadas en un formato cuadrado de 12 por 12 milímetros, estas papas fritas están diseñadas para ofrecer la combinación ideal de crujiente dorado por fuera y suavidad irresistible por dentro. Perfectas para acompañar cualquier platillo, desde hamburguesas gourmet hasta platos principales y ensaladas, nuestras papas fritas 12x12 añaden un toque de calidad y sabor a cada bocado. Experimenta la perfección en cada mordisco y convierte cada comida en una experiencia deliciosa y memorable.&quot;,
-            &quot;title&quot;: &quot;Papas fritas 12x12 onefry  2,5 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/12x12.png&quot;
-        },
-        {
-            &quot;precio&quot;: 6990,
-            &quot;id&quot;: 3,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras deliciosas papas fritas 6x6, el acompañamiento perfecto para realzar tus comidas. Cortadas en un tamaño cuadrado de 6 por 6 milímetros, estas papas fritas están diseñadas para ofrecer una combinación excepcional de crujiente en cada bocado y una textura interior suave y sabrosa. Ideales para acompañar una amplia variedad de platos, desde hamburguesas jugosas hasta platos principales gourmet y ensaladas frescas, nuestras papas fritas 6x6 añaden un toque de calidad y sabor a cada comida. Disfruta de la perfección en cada mordisco y transforma tus platos habituales en una experiencia gastronómica memorable.&quot;,
-            &quot;title&quot;: &quot;Papas Fritas Mccain 6x6 mm 2,5kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/6x6.png&quot;
-        },
-        {
-            &quot;precio&quot;: 7990,
-            &quot;id&quot;: 4,
-            &quot;categoria&quot;:&quot;papas fritas&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre nuestras deliciosas papas fritas crinkle, el acompañamiento ideal para tus comidas. Con su característico corte ondulado, estas papas fritas no solo ofrecen una textura crujiente y dorada por fuera, sino también una suavidad irresistible por dentro. Su diseño único permite capturar más salsa en cada bocado, haciendo que cada experiencia sea aún más sabrosa. Perfectas para acompañar hamburguesas, sándwiches, o cualquier plato principal, nuestras papas fritas crinkle aportan un toque de diversión y sabor a tu mesa. Disfruta de una explosión de sabor y textura en cada mordisco y transforma tus comidas cotidianas en momentos especiales y memorables.&quot;,
-            &quot;title&quot;: &quot;Papa Crinkle Mccain 2.5kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/crinkle.png&quot;
-        },
-        {
-            &quot;precio&quot;:17990 ,
-            &quot;id&quot;: 5,
-            &quot;categoria&quot;:&quot;Aceites&quot;,
-            &quot;marca&quot;: &quot;Maxi Frits&quot;,
-            &quot;descripcion&quot;: &quot;Descubre la calidad superior de nuestro aceite, especialmente formulado para freír tus comidas a la perfección. Este aceite es ideal para lograr frituras crujientes y doradas, manteniendo el sabor auténtico de cada ingrediente. Su alta resistencia al calor garantiza una cocción uniforme y evita la degradación rápida, permitiéndote disfrutar de platos fritos más saludables y sabrosos. Perfecto para freír desde papas y empanadas hasta pollo y mariscos, nuestro aceite es el aliado esencial en tu cocina para obtener resultados profesionales en cada preparación. Dale a tus recetas favoritas el toque perfecto con nuestro aceite de calidad superior y transforma tus comidas en experiencias culinarias inolvidables.&quot;,  
-            &quot;title&quot;: &quot;Aceite Maxi Frits 20 Lts&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/frits.png&quot;
-        },
-        {
-            &quot;precio&quot;:12990 ,
-            &quot;id&quot;: 6,
-            &quot;categoria&quot;:&quot;Aceites&quot;,
-            &quot;marca&quot;: &quot;Maxi Frits&quot;,
-            &quot;descripcion&quot;: &quot;Presentamos nuestro Aceite Maxi Frits de 5 litros, la elección perfecta para todas tus necesidades de freír en la cocina. Este aceite de alta calidad está diseñado para ofrecer un rendimiento excepcional, brindando una fritura crujiente y dorada con cada uso. Su fórmula avanzada resiste altas temperaturas, garantizando una cocción uniforme y reduciendo la absorción de grasa, lo que resulta en comidas más ligeras y saludables. Ideal para grandes familias, restaurantes o cualquier cocina que requiera un suministro generoso de aceite confiable, el Aceite Maxi Prits de 5 litros es perfecto para freír papas, pollo, mariscos y mucho más. Con su tamaño conveniente, puedes estar seguro de que siempre tendrás suficiente aceite a mano para todas tus necesidades culinarias. Mejora la calidad de tus frituras y disfruta de comidas deliciosas con nuestro Aceite Maxi Prits de 5 litros.&quot;,
-            &quot;title&quot;: &quot;Aceite Maxi Frits 5 Lts&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/frits5.png&quot;
-        },
-        {
-            &quot;precio&quot;:15990 ,
-            &quot;id&quot;: 7,
-            &quot;categoria&quot;:&quot;Pollo&quot;,
-            &quot;marca&quot;: &quot;Sadia&quot;,
-            &quot;descripcion&quot;: &quot;Descubre la deliciosa calidad de nuestros Nuggets Sadia de 2 kg, hechos con pollo de primera. Estos nuggets son el acompañamiento perfecto para cualquier comida, ofreciendo una combinación irresistible de una cubierta crujiente y un interior jugoso y tierno. Ideal para toda la familia, cada bocado está lleno de sabor y satisfacción. Su preparación es rápida y sencilla, ya sea al horno, en la freidora de aire o fritos en sartén, lo que los convierte en una opción conveniente para comidas rápidas y deliciosas. Perfectos para servir con salsas variadas, ensaladas o como parte de un plato principal, los Nuggets Sadia de 2 kg son una opción versátil y deliciosa que todos disfrutarán. Asegúrate de tener siempre a mano estos nuggets para transformar cualquier comida en una experiencia culinaria deliciosa y reconfortante.&quot;,  
-            &quot;title&quot;: &quot;Nuggets Sadia 2 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/nuggets.png&quot;
-        },
-        {
-            &quot;precio&quot;:12990 ,
-            &quot;id&quot;: 8,
-            &quot;categoria&quot;:&quot;Pollo&quot;,
-            &quot;marca&quot;: &quot;Sadia&quot;,
-            &quot;descripcion&quot;: &quot;Disfruta de la calidad y el sabor inigualable de nuestras Alitas Chicken Wings Sadia de 2 kg. Estas alitas de pollo son perfectas para cualquier ocasión, ya sea una reunión familiar, una fiesta con amigos o una cena informal. Preparadas con los mejores ingredientes, nuestras alitas son jugosas por dentro y tienen una piel crujiente que te hará querer más.Fáciles de cocinar, puedes prepararlas al horno, en la parrilla o fritas, logrando siempre un resultado delicioso y apetitoso. Las Alitas Chicken Wings Sadia son ideales para acompañar con tus salsas favoritas, desde la clásica barbacoa hasta una picante de búfalo, adaptándose a todos los gustos. Con un tamaño conveniente de 2 kg, son perfectas para compartir y garantizar que siempre haya suficiente para todos.&quot;,
-            &quot;title&quot;: &quot;Alitas Chicken Wings Sadia 2 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/alitas.png&quot;
-        },
-        {
-            &quot;precio&quot;:15990,
-            &quot;id&quot;: 9,
-            &quot;categoria&quot;:&quot;Aros de Cebolla&quot;,
-            &quot;marca&quot;: &quot;McCain&quot;,
-            &quot;descripcion&quot;: &quot;Descubre los exquisitos Aros de Cebolla McCain de 1,5 kg, el complemento perfecto para cualquier comida o aperitivo. Estos aros de cebolla están elaborados con cebollas frescas, rebozadas en una crujiente capa dorada que garantiza una textura inigualable y un sabor delicioso en cada mordisco. Ideales para servir como guarnición, aperitivo o incluso como un sabroso snack, los Aros de Cebolla McCain son fáciles de preparar. Puedes cocinarlos al horno, en la freidora de aire o fritos en sartén, logrando siempre un resultado perfecto en pocos minutos.&quot;,
-            &quot;title&quot;: &quot;Aros de Cebolla McCain 1,5 kg&quot;,
-            &quot;thumbnailUrl&quot;: &quot;../../../assets/images/aros.png&quot;
-        }
-    ];
+
+      /**
+     * Servicio para la gestión de productos.
+     * Proporciona métodos para agregar, actualizar, y eliminar productos en Firestore.
+     */
+    
+    private productsCollection &#x3D; collection(this.firestore, &#x27;products&#x27;);
+    constructor(private firestore: Firestore) {}
+
+    /**
+     * BehaviorSubject que contiene el carrito de compras.
+     * Emite un arreglo de objetos que contienen productos y cantidades.
+     */
 
     private cart &#x3D; new BehaviorSubject&lt;{ product: Product, quantity: number }[]&gt;(this.getCart());
     cart$ &#x3D; this.cart.asObservable();
+    
+    /**
+     * Añade un nuevo producto a la colección de productos en Firestore.
+     * @param product El producto que se añadirá a Firestore.
+     * @returns Una promesa que se resuelve cuando se completa la operación de añadir el producto.
+     */
 
+    addProduct(product: Product): Promise&lt;void&gt; {
+      const productDoc &#x3D; doc(this.firestore, &#x60;products/${product.id}&#x60;);
+      return setDoc(productDoc, product);
+    }
+
+    /**
+     * Actualiza un producto existente en Firestore.
+     * @param id El ID del producto que se actualizará.
+     * @param product Objeto parcial que contiene los campos actualizados del producto.
+     * @returns Una promesa que se resuelve cuando se completa la operación de actualizar el producto.
+     */
+  
+    updateProduct(id: string | number, product: Partial&lt;Product&gt;): Promise&lt;void&gt; {
+      const productDoc &#x3D; doc(this.firestore, &#x60;products/${id}&#x60;);
+      return updateDoc(productDoc, product);
+    }
+
+    /**
+     * Elimina un producto de la colección en Firestore.
+     * @param id El ID del producto que se eliminará.
+     * @returns Una promesa que se resuelve cuando se completa la operación de eliminar el producto.
+     */
+  
+    deleteProduct(id: string): Promise&lt;void&gt; {
+      const productDoc &#x3D; doc(this.firestore, &#x60;products/${id}&#x60;);
+      return deleteDoc(productDoc);
+    }
+
+    /**
+     * Verifica si existe un producto con el ID especificado en Firestore.
+     * @param id El ID del producto que se verificará.
+     * @returns Una promesa que se resuelve con true si el documento existe, o false si no existe.
+     */
+
+    checkProductIdExists(id: string): Promise&lt;boolean&gt; {
+      const productDoc &#x3D; doc(this.firestore, &#x60;products/${id}&#x60;);
+      return getDoc(productDoc).then(docSnapshot &#x3D;&gt; docSnapshot.exists());
+    }
 
     /**
    * Obtiene todos los productos disponibles.
    * @return Un arreglo de objetos tipo Product que representa todos los productos disponibles.
    */
     
-    getProducts(): Product[]{
-        return this.products;
+    getProducts(): Observable&lt;Product[]&gt; {
+      const productsCollection &#x3D; collection(this.firestore, &#x27;products&#x27;);
+      return collectionData(productsCollection, { idField: &#x27;id&#x27; }) as Observable&lt;Product[]&gt;;
     }
+  
 
    /**
    * Obtiene un producto por su ID.
@@ -997,10 +1275,12 @@ export class ProductService{
    * @return El objeto tipo Product que corresponde al ID proporcionado, o undefined si no se encuentra.
    */
     
-    getProductById(id: number): Product | undefined {
-        return this.products.find(product &#x3D;&gt; product.id &#x3D;&#x3D;&#x3D; id);
-    }
-
+   getProductById(id: string): Observable&lt;Product | undefined&gt; {
+    const productDoc &#x3D; doc(this.firestore, &#x60;products/${id}&#x60;);
+    return docData(productDoc, { idField: &#x27;id&#x27; }).pipe(
+      map(product &#x3D;&gt; product ? (product as Product) : undefined)
+    );
+  }
      /**
    * Agrega un producto al carrito de compras.
    * Si el producto ya existe en el carrito, incrementa la cantidad; de lo contrario, lo agrega con cantidad 1.
